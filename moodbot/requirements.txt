@@ -1,0 +1,4 @@
+flask-cors==3.0.3
+requests==2.18.4
+python-telegram-bot==8.1.1
+flask==0.12.2
