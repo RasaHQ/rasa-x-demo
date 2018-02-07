@@ -26,8 +26,6 @@ RUN apt-get update -qq && \
 
 WORKDIR /app
 
-RUN pip install --only-binary=numpy,scipy,scikit-learn numpy scipy scikit-learn
-
 # Copy as early as possible so we can cache ...
 
 COPY requirements.txt ./
@@ -42,4 +40,4 @@ COPY . /app
 
 EXPOSE 5001
 
-CMD ["python", "moodbot/main.py"]
+CMD ["python", "/app/main.py"]
