@@ -1,8 +1,9 @@
 #! /bin/bash
 
-echo "copying rasa core model"
+echo "copying rasa core model & restarting"
 
 cp -r models/dialogue/* /home/core_project/
+sudo docker restart enterprise_core
 
 echo "stopping and starting app"
   sudo docker stop rasa_application 2> /dev/null
