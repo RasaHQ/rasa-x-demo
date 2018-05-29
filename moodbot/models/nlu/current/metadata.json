@@ -1,20 +1,86 @@
 {
-    "entity_synonyms": null, 
+    "trained_at": "20180522-172921", 
     "pipeline": [
-        "rasa_nlu.utils.spacy_utils.SpacyNLP", 
-        "rasa_nlu.tokenizers.spacy_tokenizer.SpacyTokenizer", 
-        "rasa_nlu.featurizers.spacy_featurizer.SpacyFeaturizer", 
-        "rasa_nlu.featurizers.regex_featurizer.RegexFeaturizer", 
-        "rasa_nlu.extractors.crf_entity_extractor.CRFEntityExtractor", 
-        "rasa_nlu.extractors.entity_synonyms.EntitySynonymMapper", 
-        "rasa_nlu.classifiers.sklearn_intent_classifier.SklearnIntentClassifier"
+        {
+            "class": "rasa_nlu.utils.spacy_utils.SpacyNLP", 
+            "model": "en", 
+            "name": "nlp_spacy", 
+            "case_sensitive": false
+        }, 
+        {
+            "name": "tokenizer_spacy", 
+            "class": "rasa_nlu.tokenizers.spacy_tokenizer.SpacyTokenizer"
+        }, 
+        {
+            "name": "intent_featurizer_spacy", 
+            "class": "rasa_nlu.featurizers.spacy_featurizer.SpacyFeaturizer"
+        }, 
+        {
+            "regex_file": "regex_featurizer.json", 
+            "name": "intent_entity_featurizer_regex", 
+            "class": "rasa_nlu.featurizers.regex_featurizer.RegexFeaturizer"
+        }, 
+        {
+            "BILOU_flag": true, 
+            "L2_c": 0.001, 
+            "features": [
+                [
+                    "low", 
+                    "title", 
+                    "upper", 
+                    "pos", 
+                    "pos2"
+                ], 
+                [
+                    "bias", 
+                    "low", 
+                    "word3", 
+                    "word2", 
+                    "upper", 
+                    "title", 
+                    "digit", 
+                    "pos", 
+                    "pos2", 
+                    "pattern"
+                ], 
+                [
+                    "low", 
+                    "title", 
+                    "upper", 
+                    "pos", 
+                    "pos2"
+                ]
+            ], 
+            "name": "ner_crf", 
+            "L1_c": 1, 
+            "classifier_file": "crf_model.pkl", 
+            "class": "rasa_nlu.extractors.crf_entity_extractor.CRFEntityExtractor", 
+            "max_iterations": 50
+        }, 
+        {
+            "synonyms_file": "entity_synonyms.json", 
+            "name": "ner_synonyms", 
+            "class": "rasa_nlu.extractors.entity_synonyms.EntitySynonymMapper"
+        }, 
+        {
+            "kernels": [
+                "linear"
+            ], 
+            "C": [
+                1, 
+                2, 
+                5, 
+                10, 
+                20, 
+                100
+            ], 
+            "name": "intent_classifier_sklearn", 
+            "max_cross_validation_folds": 5, 
+            "classifier_file": "intent_classifier_sklearn.pkl", 
+            "class": "rasa_nlu.classifiers.sklearn_intent_classifier.SklearnIntentClassifier"
+        }
     ], 
-    "spacy_model_name": "en", 
-    "language": "en", 
-    "intent_classifier_sklearn": "intent_classifier.pkl", 
-    "trained_at": "20180102-114817", 
+    "rasa_nlu_version": "0.12.3", 
     "training_data": "training_data.json", 
-    "entity_extractor_crf": null, 
-    "rasa_nlu_version": "0.10.4", 
-    "regex_featurizer": null
+    "language": "en"
 }
