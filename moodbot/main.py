@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 from rasa_core.channels.rest import HttpInputChannel
 from rasa_core.remote import RemoteAgent
@@ -12,6 +13,9 @@ if __name__ == "__main__":
 
     input_channel = HttpInputChannel(
         5001, "/", RasaChatInput(os.environ.get("RASA_API_ENDPOINT_URL")))
+
+    # makes sure core is available before we start the app
+    time.sleep(60)
 
     agent = RemoteAgent.load('models/dialogue',
                              os.environ.get("RASA_REMOTE_CORE_ENDPOINT_URL"),
