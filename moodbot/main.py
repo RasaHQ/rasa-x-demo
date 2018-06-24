@@ -15,6 +15,7 @@ if __name__ == "__main__":
 
     agent = RemoteAgent.load('models/dialogue',
                              os.environ.get("RASA_REMOTE_CORE_ENDPOINT_URL"),
-                             os.environ.get("RASA_CORE_TOKEN"))
+                             os.environ.get("RASA_CORE_TOKEN"),
+                             max_retries=30)
 
     agent.handle_channel(input_channel)
