@@ -113,3 +113,7 @@ travis.pub
 
 replicated.yml
 *~
+
+# NLU and Core models
+*.zip
+models
