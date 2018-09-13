@@ -11,7 +11,7 @@ help:
 	@echo "        Train a dialogue model and zip it."
 
 train-nlu:
-	python -m rasa_nlu.train -c nlu_model_config.yml --fixed_model_name current \
+	python -m rasa_nlu.train -c nlu_model_config.json --fixed_model_name current \
 	       --data ./data/nlu.md --path models/ --project nlu
 
 train-core:
@@ -24,10 +24,10 @@ zip-core-model:
 	make train-core
 	cd models/dialogue && \
 	zip -r core_model.zip * && \
-	mv core_model.zip ../../
+	mv core_model.zip ../
 
 zip-nlu-model:
 	make train-nlu && \
 	cd models/nlu/current && \
 	zip -r nlu_model.zip * && \
-	mv nlu_model.zip ../../../
+	mv nlu_model.zip ../../
