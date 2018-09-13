@@ -117,3 +117,4 @@ replicated.yml
 # NLU and Core models
 *.zip
 models
+travis_gcloud_auth.json
