@@ -1,10 +1,5 @@
-action_factory: null
-action_names:
-- utter_greet
-- utter_cheer_up
-- utter_did_that_help
-- utter_happy
-- utter_goodbye
+%YAML 1.1
+---
 actions:
 - utter_greet
 - utter_cheer_up
@@ -15,12 +10,18 @@ config:
   store_entities_as_slots: true
 entities: []
 intents:
-- greet
-- goodbye
-- mood_affirm
-- mood_deny
-- mood_great
-- mood_unhappy
+- greet:
+    use_entities: true
+- goodbye:
+    use_entities: true
+- mood_affirm:
+    use_entities: true
+- mood_deny:
+    use_entities: true
+- mood_great:
+    use_entities: true
+- mood_unhappy:
+    use_entities: true
 slots: {}
 templates:
   utter_cheer_up:
@@ -39,4 +40,3 @@ templates:
     text: Hey! How are you?
   utter_happy:
   - text: Great carry on!
-topics: []

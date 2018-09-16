@@ -1,0 +1,35 @@
+language: python
+sudo: required
+services:
+- docker
+python:
+- '3.6'
+env:
+- CORE_SDK_VERSION=0.11.2
+install: skip
+before_script:
+- openssl aes-256-cbc
+  -K $encrypted_3d617535a027_key
+  -iv $encrypted_3d617535a027_iv
+  -in travis_gcloud_auth.json.enc
+  -out travis_gcloud_auth.json
+  -d
+- cat travis_gcloud_auth.json | docker login -u _json_key --password-stdin https://gcr.io
+- "{ docker pull gcr.io/rasa-platform/platform-demo:branch.${TRAVIS_BRANCH}
+  && export TAG_NAME=branch.${TRAVIS_BRANCH}; }
+  || { docker pull gcr.io/rasa-platform/platform-demo:latest
+  && export TAG_NAME=latest; }
+  || true"
+- echo $TAG_NAME
+script:
+- docker build
+  -t gcr.io/rasa-platform/platform-demo:v$TRAVIS_BUILD_NUMBER
+  -t gcr.io/rasa-platform/platform-demo:branch.${TRAVIS_BRANCH}
+  --build-arg CORE_SDK_VERSION=${CORE_SDK_VERSION}
+  --cache-from gcr.io/rasa-platform/platform-demo:${TAG_NAME}
+  .
+after_success:
+- docker push gcr.io/rasa-platform/platform-demo:v$TRAVIS_BUILD_NUMBER
+- docker push gcr.io/rasa-platform/platform-demo:branch.${TRAVIS_BRANCH}
+
+

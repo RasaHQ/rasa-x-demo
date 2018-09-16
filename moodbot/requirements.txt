@@ -1,5 +1,0 @@
-git+https://github.com/rasaHQ/rasa_core.git@b37057c35452f26d567677eaf15216fcf0282b1c#egg=rasa_core
-flask-cors==3.0.3
-requests==2.18.4
-python-telegram-bot==8.1.1
-flask==0.12.2
