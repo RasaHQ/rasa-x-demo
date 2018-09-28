@@ -3,10 +3,10 @@
     "action_listen": {
       "slots": []
     },
-    "utter_happy": {
+    "utter_goodbye": {
       "slots": []
     },
-    "utter_goodbye": {
+    "utter_happy": {
       "slots": []
     }
   },
