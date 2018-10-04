@@ -3,14 +3,14 @@
     "action_listen": {
       "slots": []
     },
-    "utter_goodbye": {
+    "utter_happy": {
       "slots": []
     },
-    "utter_happy": {
+    "utter_goodbye": {
       "slots": []
     }
   },
-  "rasa_core": "0.11.8",
+  "rasa_core": "0.11.9",
   "python": "3.6.5",
   "max_histories": [
     null,
