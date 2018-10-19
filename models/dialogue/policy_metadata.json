@@ -10,7 +10,7 @@
       "slots": []
     }
   },
-  "rasa_core": "0.11.9",
+  "rasa_core": "0.12.0a4",
   "python": "3.6.5",
   "max_histories": [
     null,
@@ -22,5 +22,6 @@
     "rasa_core.policies.fallback.FallbackPolicy",
     "rasa_core.policies.memoization.MemoizationPolicy",
     "rasa_core.policies.keras_policy.KerasPolicy"
-  ]
+  ],
+  "trained_at": "20181019-094535"
 }
