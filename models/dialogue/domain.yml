@@ -9,6 +9,7 @@ actions:
 config:
   store_entities_as_slots: true
 entities: []
+forms: []
 intents:
 - greet:
     use_entities: true

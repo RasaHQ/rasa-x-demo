@@ -9,6 +9,7 @@
     "prev_action_listen",
     "prev_action_restart",
     "prev_action_default_fallback",
+    "prev_action_deactivate_form",
     "prev_utter_greet",
     "prev_utter_cheer_up",
     "prev_utter_did_that_help",
