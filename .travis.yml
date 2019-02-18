@@ -8,7 +8,7 @@ jobs:
   include:
   - stage: Build containers
     env:
-    - CORE_SDK_VERSION=0.12.0
+    - CORE_SDK_VERSION=0.12.2
     install: skip
     before_script:
     - openssl aes-256-cbc

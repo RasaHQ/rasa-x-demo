@@ -1,2 +1,2 @@
-git+https://github.com/rasaHQ/rasa_core.git@0.12.0#egg=rasa_core
-git+https://github.com/rasaHQ/rasa_nlu.git@0.13.6#egg=rasa_nlu
+git+https://github.com/rasaHQ/rasa_core.git@0.13.2#egg=rasa_core
+git+https://github.com/rasaHQ/rasa_nlu.git@0.14.3#egg=rasa_nlu

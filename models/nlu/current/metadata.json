@@ -56,7 +56,7 @@
         },
         {
             "name": "ner_synonyms",
-            "synonyms_file": "entity_synonyms.json",
+            "synonyms_file": null,
             "class": "rasa_nlu.extractors.entity_synonyms.EntitySynonymMapper"
         },
         {
@@ -67,6 +67,9 @@
                 10,
                 20,
                 100
+            ],
+            "gamma": [
+                0.1
             ],
             "kernels": [
                 "linear"
@@ -79,6 +82,6 @@
         }
     ],
     "training_data": "training_data.json",
-    "trained_at": "20181004-224921",
-    "rasa_nlu_version": "0.13.6"
+    "trained_at": "20190217-222220",
+    "rasa_nlu_version": "0.14.3"
 }
