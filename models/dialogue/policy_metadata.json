@@ -23,7 +23,7 @@
     "rasa_core.policies.memoization.MemoizationPolicy"
   ],
   "trained_at": "20190306-134521",
-  "rasa_core": "0.14.0a2",
+  "rasa_core": "0.13.5",
   "tensorflow": "1.12.0",
   "sklearn": "0.20.2"
 }
