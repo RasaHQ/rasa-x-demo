@@ -1,5 +1,5 @@
 {
-  "pipeline": "pretrained_embeddings_spacy",
+  "pipeline": "tensorflow_embedding",
   "path" : "./models",
   "project": "nlu",
   "data" : "./data/nlu.md"
