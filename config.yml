@@ -1,0 +1,18 @@
+# Configuration for Rasa NLU.
+# https://rasa.com/docs/nlu/components/
+pipeline: spacy_sklearn
+path: ./models
+project: nlu
+data: ./data/nlu.md
+
+
+# Configuration for Rasa Core.
+# https://rasa.com/docs/core/policies
+policies:
+- name: KerasPolicy
+  epochs: 300
+  max_history: 5
+- name: FallbackPolicy
+  fallback_action_name: 'action_default_fallback'
+- name: MemoizationPolicy
+  max_history: 5
