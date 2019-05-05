@@ -49,5 +49,5 @@ jobs:
     - docker pull gcr.io/rasa-platform/rasa-x-demo:v${TRAVIS_BUILD_NUMBER}
     script:
     - docker tag gcr.io/rasa-platform/rasa-x-demo:v${TRAVIS_BUILD_NUMBER}
-      gcr.io/rasa-platform/rasa-x-demo:v$TRAVIS_TAG
-    - docker push gcr.io/rasa-platform/rasa-x-demo:v$TRAVIS_TAG
+      gcr.io/rasa-platform/rasa-x-demo:$TRAVIS_TAG
+    - docker push gcr.io/rasa-platform/rasa-x-demo:$TRAVIS_TAG
