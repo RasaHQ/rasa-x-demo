@@ -1,1 +1,1 @@
-git+https://github.com/rasaHQ/rasa_nlu.git@master#egg=rasa_nlu
+rasa==1.0.0rc2
