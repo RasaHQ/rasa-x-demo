@@ -1,5 +1,5 @@
 ARG CORE_SDK_VERSION
-FROM rasa/rasa-sdk:CORE_SDK_VERSION
+FROM rasa/rasa-sdk:$CORE_SDK_VERSION
 
 # copy in your source code
 COPY main.py .
