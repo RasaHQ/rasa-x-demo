@@ -8,7 +8,7 @@ jobs:
   include:
   - stage: Build containers
     env:
-    - CORE_SDK_VERSION=0.12.2
+    - CORE_SDK_VERSION=1.0.0
     install: skip
     before_script:
     - openssl aes-256-cbc
@@ -18,22 +18,22 @@ jobs:
       -out travis_gcloud_auth.json
       -d
     - cat travis_gcloud_auth.json | docker login -u _json_key --password-stdin https://gcr.io
-    - "{ docker pull gcr.io/rasa-platform/platform-demo:branch.${TRAVIS_BRANCH}
+    - "{ docker pull gcr.io/rasa-platform/rasa-x-demo:branch.${TRAVIS_BRANCH}
         && export TAG_NAME=branch.${TRAVIS_BRANCH}; }
-        || { docker pull gcr.io/rasa-platform/platform-demo:latest
+        || { docker pull gcr.io/rasa-platform/rasa-x-demo:latest
         && export TAG_NAME=latest; }
         || true"
     - echo $TAG_NAME
     script:
     - docker build
-      -t gcr.io/rasa-platform/platform-demo:v$TRAVIS_BUILD_NUMBER
-      -t gcr.io/rasa-platform/platform-demo:branch.${TRAVIS_BRANCH}
+      -t gcr.io/rasa-platform/rasa-x-demo:v$TRAVIS_BUILD_NUMBER
+      -t gcr.io/rasa-platform/rasa-x-demo:branch.${TRAVIS_BRANCH}
       --build-arg CORE_SDK_VERSION=${CORE_SDK_VERSION}
-      --cache-from gcr.io/rasa-platform/platform-demo:${TAG_NAME}
+      --cache-from gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME}
       .
     after_success:
-    - docker push gcr.io/rasa-platform/platform-demo:v$TRAVIS_BUILD_NUMBER
-    - docker push gcr.io/rasa-platform/platform-demo:branch.${TRAVIS_BRANCH}
+    - docker push gcr.io/rasa-platform/rasa-x-demo:v$TRAVIS_BUILD_NUMBER
+    - docker push gcr.io/rasa-platform/rasa-x-demo:branch.${TRAVIS_BRANCH}
 
   - stage: Deploy tag
     if: tag IS present
@@ -46,8 +46,8 @@ jobs:
       -out travis_gcloud_auth.json
       -d
     - cat travis_gcloud_auth.json | docker login -u _json_key --password-stdin https://gcr.io
-    - docker pull gcr.io/rasa-platform/platform-demo:v${TRAVIS_BUILD_NUMBER}
+    - docker pull gcr.io/rasa-platform/rasa-x-demo:v${TRAVIS_BUILD_NUMBER}
     script:
-    - docker tag gcr.io/rasa-platform/platform-demo:v${TRAVIS_BUILD_NUMBER}
-      gcr.io/rasa-platform/platform-demo:v$TRAVIS_TAG
-    - docker push gcr.io/rasa-platform/platform-demo:v$TRAVIS_TAG
+    - docker tag gcr.io/rasa-platform/rasa-x-demo:v${TRAVIS_BUILD_NUMBER}
+      gcr.io/rasa-platform/rasa-x-demo:$TRAVIS_TAG
+    - docker push gcr.io/rasa-platform/rasa-x-demo:$TRAVIS_TAG

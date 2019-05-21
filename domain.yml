@@ -1,10 +1,10 @@
 intents:
-  - greet
-  - goodbye
-  - mood_affirm
-  - mood_deny
-  - mood_great
-  - mood_unhappy
+- greet
+- goodbye
+- mood_affirm
+- mood_deny
+- mood_great
+- mood_unhappy
 
 templates:
   utter_greet:
@@ -29,8 +29,8 @@ templates:
   - text: "Bye"
 
 actions:
-  - utter_greet
-  - utter_cheer_up
-  - utter_did_that_help
-  - utter_happy
-  - utter_goodbye
+- utter_greet
+- utter_cheer_up
+- utter_did_that_help
+- utter_happy
+- utter_goodbye
