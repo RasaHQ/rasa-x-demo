@@ -5,9 +5,7 @@ help:
 	@echo "        Train a combined Rasa NLU and Core model."
 
 train:
-	rasa train && \
-	cd models && \
-	mv *.tar.gz model.tar.gz
+	rasa train --fixed-model-name model
 
 run-cmdline:
 	rasa run --enable-api
