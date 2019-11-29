@@ -8,7 +8,7 @@ jobs:
   include:
   - stage: Build containers
     env:
-    - CORE_SDK_VERSION=1.4.0
+    - RASA_SDK_VERSION=1.5.1
     install: skip
     before_script:
     - openssl aes-256-cbc
@@ -28,7 +28,7 @@ jobs:
     - docker build
       -t gcr.io/rasa-platform/rasa-x-demo:v$TRAVIS_BUILD_NUMBER
       -t gcr.io/rasa-platform/rasa-x-demo:branch.${TRAVIS_BRANCH}
-      --build-arg CORE_SDK_VERSION=${CORE_SDK_VERSION}
+      --build-arg RASA_SDK_VERSION=${RASA_SDK_VERSION}
       --cache-from gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME}
       .
     after_success:
