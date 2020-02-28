@@ -13,5 +13,5 @@ if __name__ == "__main__":
     endpoint.run(
         None,  # action package
         constants.DEFAULT_SERVER_PORT,  # port of the web server
-        "*"  # cors origins
+        "*",  # cors origins
     )
