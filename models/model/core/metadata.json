@@ -1,0 +1,31 @@
+{
+  "action_fingerprints": {
+    "action_listen": {
+      "slots": []
+    },
+    "utter_happy": {
+      "slots": []
+    },
+    "utter_goodbye": {
+      "slots": []
+    }
+  },
+  "python": "3.7.5",
+  "max_histories": [
+    5,
+    null,
+    5,
+    null
+  ],
+  "ensemble_name": "rasa.core.policies.ensemble.SimplePolicyEnsemble",
+  "policy_names": [
+    "rasa.core.policies.keras_policy.KerasPolicy",
+    "rasa.core.policies.fallback.FallbackPolicy",
+    "rasa.core.policies.memoization.MemoizationPolicy",
+    "rasa.core.policies.mapping_policy.MappingPolicy"
+  ],
+  "trained_at": "20200325-165709",
+  "rasa": "1.9.0",
+  "tensorflow": "2.1.0",
+  "sklearn": "0.22.2.post1"
+}
