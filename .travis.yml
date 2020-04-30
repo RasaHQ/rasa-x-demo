@@ -7,8 +7,6 @@ python:
 jobs:
   include:
   - stage: Build containers
-    env:
-    - RASA_SDK_VERSION=1.5.1
     install: skip
     before_script:
     - openssl aes-256-cbc
@@ -25,6 +23,8 @@ jobs:
         || true"
     - echo $TAG_NAME
     script:
+    - RASA_SDK_VERSION=$(curl https://hub.docker.com/v2/repositories/rasa/rasa-sdk/tags |  jq -r '.results|.[]|.name' | grep -E "^[[:digit:]|\.]+$" | sort -V | tail -n 1)
+    - echo "Latest SDK version is ${RASA_SDK_VERSION}"
     - docker build
       -t gcr.io/rasa-platform/rasa-x-demo:v$TRAVIS_BUILD_NUMBER
       -t gcr.io/rasa-platform/rasa-x-demo:branch.${TRAVIS_BRANCH}
