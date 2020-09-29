@@ -1,3 +1,5 @@
+version: "2.0"
+
 intents:
   - greet
   - goodbye
@@ -27,13 +29,6 @@ responses:
 
   utter_goodbye:
     - text: "Bye"
-
-actions:
-  - utter_greet
-  - utter_cheer_up
-  - utter_did_that_help
-  - utter_happy
-  - utter_goodbye
 
 session_config:
   session_expiration_time: 60.0

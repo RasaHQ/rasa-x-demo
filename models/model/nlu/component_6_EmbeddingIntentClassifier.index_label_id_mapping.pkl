@@ -1,1 +1,0 @@
-{"0": "goodbye", "1": "greet", "2": "mood_affirm", "3": "mood_deny", "4": "mood_great", "5": "mood_unhappy"}
