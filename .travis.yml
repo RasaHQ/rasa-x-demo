@@ -23,7 +23,7 @@ jobs:
         || true"
     - echo $TAG_NAME
     script:
-    - RASA_SDK_VERSION=$(curl https://hub.docker.com/v2/repositories/rasa/rasa-sdk/tags |  jq -r '.results|.[]|.name' | grep -E "^[[:digit:]|\.]+$" | sort -V | tail -n 1)
+    - RASA_SDK_VERSION=$(curl https://hub.docker.com/v2/repositories/rasa/rasa-sdk/tags |  jq -r '.results|.[]|.name' | grep -E "^[[:digit:]|\.|rc]+$" | sort -V | tail -n 1)
     - echo "Latest SDK version is ${RASA_SDK_VERSION}"
     - docker build
       -t gcr.io/rasa-platform/rasa-x-demo:v$TRAVIS_BUILD_NUMBER
