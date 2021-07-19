@@ -3,8 +3,8 @@ version: "2.0"
 intents:
   - greet
   - goodbye
-  - affirm
-  - deny
+  - mood_affirm
+  - mood_deny
   - mood_great
   - mood_unhappy
   - bot_challenge
