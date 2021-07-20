@@ -1,6 +1,7 @@
 name: Train and test model
 
 on:
+  # Run on label 
   pull_request:
     types: [synchronize, labeled]
 
