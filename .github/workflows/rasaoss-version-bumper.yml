@@ -5,6 +5,8 @@ on:
   schedule:
     # Run once a day at 08:00
     - cron: '0 8 * * *'
+  pull_request:
+
 
 jobs:
   bump_rasa_oss_version:
