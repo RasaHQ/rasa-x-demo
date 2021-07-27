@@ -14,9 +14,6 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       TAG_NAME: ${GITHUB_REF#refs/tags/}
-      SAFE_TAG_NAME: $(echo $TAG_NAME | sed 's/\./-/g')
-      BASE_BRANCH: ${{ github.base_ref }}
-      DOCKER_DEPLOYMENT: pr-${SAFE_TAG_NAME}
     steps:
       - name: Checkout git repository 🕝
         uses: actions/checkout@v2
@@ -38,22 +35,16 @@ jobs:
           RASA_SDK_VERSION=$(curl https://hub.docker.com/v2/repositories/rasa/rasa-sdk/tags |  jq -r '.results|.[]|.name' | grep -E "^[[:digit:]|\.|rc]+$" | sort -V | tail -n 1)
           echo "Latest SDK version is ${RASA_SDK_VERSION}"
           docker build \
-                -t gcr.io/rasa-platform/rasa-x-demo:${DOCKER_DEPLOYMENT} \
-                -t gcr.io/rasa-platform/rasa-x-demo:branch.${BASE_BRANCH} \
+                -t gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME} \
                 --build-arg RASA_SDK_VERSION=${RASA_SDK_VERSION} \
                 --cache-from gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME} \
                 .
-      - name: Push new images to gcr
-        run: |
-          docker push gcr.io/rasa-platform/rasa-x-demo:${DOCKER_DEPLOYMENT}
 
       - name: Release new images
         run: |
-          docker tag gcr.io/rasa-platform/rasa-x-demo:${DOCKER_DEPLOYMENT} \
-                gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME}
           docker push gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME}
 
           # Also tag as latest
-          docker tag gcr.io/rasa-platform/rasa-x-demo:${DOCKER_DEPLOYMENT} \
+          docker tag gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME} \
                           gcr.io/rasa-platform/rasa-x-demo:latest
           docker push gcr.io/rasa-platform/rasa-x-demo:latest
