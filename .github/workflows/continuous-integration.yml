@@ -37,7 +37,6 @@ jobs:
           docker build \
                 -t gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME} \
                 --build-arg RASA_SDK_VERSION=${RASA_SDK_VERSION} \
-                --cache-from gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME} \
                 .
 
       - name: Release new images
