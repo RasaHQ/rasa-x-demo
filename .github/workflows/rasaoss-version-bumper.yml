@@ -89,7 +89,7 @@ jobs:
         run: |
           gh pr create --fill --label "$LABEL"
 
-      - name: Update and commit config and domain files
+      - name: Update and commit config and domain files ⬆️
         if: env.CREATE_PR == 'true'
         env:
           DOMAIN_FILE: https://raw.githubusercontent.com/RasaHQ/rasa/main/rasa/cli/initial_project/domain.yml
