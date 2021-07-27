@@ -1,0 +1,39 @@
+name: Train and test model
+
+on:
+  # Run when the label `train and test` added to a pull request
+  pull_request:
+    types: [synchronize, labeled]
+
+jobs:
+  train_and_test:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'train and test')
+
+    steps:
+      - name: Checkout repository 🕝
+        uses: actions/checkout@v2
+
+      - name: Read Rasa version
+        run: |
+          RASA_VERSION=$(sed -n 's/^rasa==//p' requirements.txt)
+          echo "RASA_VERSION=$RASA_VERSION" >> $GITHUB_ENV
+
+      # align with Makefile
+      - name: Train and test 🔬
+        uses: RasaHQ/rasa-train-test-gha@main
+        with:
+          workspace: ${{ github.workspace }}
+          rasa_version: ${{ env.RASA_VERSION }}
+          train_args:  --fixed-model-name model
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Upload the model ⬆️
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+          git add -u
+          git commit -m "Upload model for Rasa OSS $RASA_VERSION"
+          git push
