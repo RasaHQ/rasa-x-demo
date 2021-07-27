@@ -28,14 +28,12 @@ jobs:
           train_args:  --fixed-model-name model
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Link changes files # DEBUG
-        run: git diff
 
       - name: Upload the model ⬆️
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-          git add models/model.tar.gz
+          git add -u
           git commit -m "Upload model for Rasa OSS $RASA_VERSION"
           git push
