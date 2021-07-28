@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Authenticate GitHub CLI
         run: |
+          # https://cli.github.com/manual/gh_auth_login
+          # read token from standard input 
           gh auth login --with-token <<< ${{ secrets.RASABOT_GITHUB_TOKEN }}
 
       - name: Get the latest Rasa OSS version 🏷
