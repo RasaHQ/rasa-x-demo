@@ -91,7 +91,9 @@ jobs:
           LABEL: 'train and test' 
         run: |
           # Fill pull request title and body with branch name and commits  
-          gh pr create --fill --label "$LABEL"
+          gh pr create --fill \
+            --label "$LABEL" \
+            --reviewer RasaHQ/infrastructure-squad
 
       - name: Notify slack on failure
         if: failure()
