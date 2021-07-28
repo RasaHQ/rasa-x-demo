@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Authenticate GitHub CLI
         run: |
+          # https://cli.github.com/manual/gh_auth_login
+          # read token from standard input 
           gh auth login --with-token <<< ${{ secrets.RASABOT_GITHUB_TOKEN }}
 
       - name: Get the latest Rasa OSS version 🏷
@@ -42,10 +44,9 @@ jobs:
             echo "CREATE_PR=true" >> $GITHUB_ENV
           fi
 
-      - name: Set branch name and PR title
+      - name: Set branch name
         if: env.CREATE_PR == 'true'
         run: |
-          echo PR_TITLE="Bump Rasa OSS from ${RASA_VERSION} to ${LATEST_RASA_VERSION}" >> $GITHUB_ENV
           echo BRANCH_NAME="Bump-Rasa-OSS-to-${LATEST_RASA_VERSION}" >> $GITHUB_ENV
 
       - name: Check if duplicated PR exists 🔍
@@ -53,8 +54,8 @@ jobs:
         run: |
           # Search all PRs (inc. open, closed, merged) and
           # return the list of matching PRs
-          gh pr list --state all --search "$PR_TITLE"
-          PRS=$(gh pr list --state all --search "$PR_TITLE")
+          gh pr list --state all --search "$BRANCH_NAME"
+          PRS=$(gh pr list --state all --search "$BRANCH_NAME")
 
           # If $PRS is not empty, we know there is a related PR that bumping Rasa OSS.
           if [[ -n $PRS ]]; then
@@ -77,25 +78,18 @@ jobs:
         run: |
           # Bump version
           sed -i "s/^rasa==.*/rasa==${LATEST_RASA_VERSION}/" requirements.txt
-
+          # Stage modified file
           git add -u
+          # Commit & Push
           git commit -m "Bump Rasa OSS to ${LATEST_RASA_VERSION}"
-          git push -u origin $BRANCH_NAME
+          git push origin $BRANCH_NAME
 
       - name: Open pull request ☄️
         if: env.CREATE_PR == 'true'
         env:
-          LABEL: 'train and test' # This label will trigger train and test workflow
+          # This label will trigger train and test workflow
+          LABEL: 'train and test' 
         run: |
+          # Fill pull request title and body with branch name and commits  
           gh pr create --fill --label "$LABEL"
 
-      - name: Update and commit config and domain files ⬆️
-        if: env.CREATE_PR == 'true'
-        env:
-          DOMAIN_FILE: https://raw.githubusercontent.com/RasaHQ/rasa/main/rasa/cli/initial_project/domain.yml
-          CONFIG_FILE: https://raw.githubusercontent.com/RasaHQ/rasa/main/rasa/cli/initial_project/config.yml
-        run: |
-          # TODO
-          # curl -O $DOMAIN_FILE
-          # curl -O $CONFIG_FILE
-          # git add -u && git commit -m "Update domain and config file" && git push | true

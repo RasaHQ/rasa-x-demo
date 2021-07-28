@@ -13,13 +13,16 @@ jobs:
     steps:
       - name: Checkout repository 🕝
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Read Rasa version
+      # Note: ideally this workflow will run on a PR where the rasa version is bumped
+      # so we can just read the version from requirements.
         run: |
           RASA_VERSION=$(sed -n 's/^rasa==//p' requirements.txt)
           echo "RASA_VERSION=$RASA_VERSION" >> $GITHUB_ENV
 
-      # align with Makefile
       - name: Train and test 🔬
         uses: RasaHQ/rasa-train-test-gha@main
         with:
@@ -28,12 +31,10 @@ jobs:
           train_args:  --fixed-model-name model
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-
       - name: Upload the model ⬆️
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-          git add -u
-          git commit -m "Upload model for Rasa OSS $RASA_VERSION"
-          git push
+          git commit -am "Upload model for Rasa OSS $RASA_VERSION"
+          git push origin $GITHUB_HEAD_REF
