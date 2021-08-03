@@ -103,4 +103,4 @@ jobs:
         with:
           channel_id: ${{ secrets.SLACK_ALERTS_CHANNEL_ID }}
           status: FAILED
-          color: danger
+          color: warning
