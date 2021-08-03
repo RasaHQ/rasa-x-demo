@@ -95,6 +95,10 @@ jobs:
             --label "$LABEL" \
             --reviewer RasaHQ/infrastructure-squad
 
+      - name: Comment
+        if: env.CREATE_PR == 'true'
+        run: gh pr comment $BRANCH_NAME --body "$(< .github/VERSION_BUMPER_PR_COMMENT.md)"
+
       - name: Notify slack on failure
         if: failure()
         env:
