@@ -88,7 +88,7 @@ jobs:
         if: env.CREATE_PR == 'true'
         env:
           # This label will trigger train and test workflow
-          LABEL: 'train and test' 
+          LABEL: 'tool:train-and-test' 
         run: |
           # Fill pull request title and body with branch name and commits  
           gh pr create --fill \
