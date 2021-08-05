@@ -1,0 +1,110 @@
+# Bump Rasa OSS version and prepare a PR for it
+name: Bump Rasa OSS version
+
+on:
+  schedule:
+    # Run once a day at 08:00
+    - cron: '0 8 * * *'
+  pull_request:
+
+
+jobs:
+  bump_rasa_oss_version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Authenticate GitHub CLI
+        run: |
+          # https://cli.github.com/manual/gh_auth_login
+          # read token from standard input 
+          gh auth login --with-token <<< ${{ secrets.RASABOT_GITHUB_TOKEN }}
+
+      - name: Get the latest Rasa OSS version 🏷
+        run: |
+          LATEST_RASA_VERSION=$(gh release list --repo github.com/RasaHQ/rasa --limit 10 | awk '{print $1}' | sort --version-sort -r | head -1)
+          echo "Latest Rasa OSS version: $LATEST_RASA_VERSION"
+          echo "LATEST_RASA_VERSION=$LATEST_RASA_VERSION" >> $GITHUB_ENV
+
+      - name: Checkout repository 🕝
+        uses: actions/checkout@v2
+
+      - name: Is Rasa OSS version up to date❓
+        run: |
+          RASA_VERSION=$(sed -n 's/^rasa==//p' requirements.txt)
+
+          echo "RASA_VERSION=$RASA_VERSION" >> $GITHUB_ENV
+          echo "Current Rasa OSS version: $RASA_VERSION"
+
+          if [[ $RASA_VERSION == $LATEST_RASA_VERSION ]]
+          then
+            echo "Current version is the the latest one. Nothing to update."
+            echo "CREATE_PR=false" >> $GITHUB_ENV
+          else
+            echo "A newer version $LATEST_RASA_VERSION has found. Bumping it now."
+            echo "CREATE_PR=true" >> $GITHUB_ENV
+          fi
+
+      - name: Set branch name
+        if: env.CREATE_PR == 'true'
+        run: |
+          echo BRANCH_NAME="Bump-Rasa-OSS-to-${LATEST_RASA_VERSION}" >> $GITHUB_ENV
+
+      - name: Check if duplicated PR exists 🔍
+        if: env.CREATE_PR == 'true'
+        run: |
+          # Search all PRs (inc. open, closed, merged) and
+          # return the list of matching PRs
+          gh pr list --state all --search "$BRANCH_NAME"
+          PRS=$(gh pr list --state all --search "$BRANCH_NAME")
+
+          # If $PRS is not empty, we know there is a related PR that bumping Rasa OSS.
+          if [[ -n $PRS ]]; then
+            echo "Found related pull request ${BRANCH_NAME}."
+            echo "Skip the following steps."
+            echo "CREATE_PR=false" >> $GITHUB_ENV
+          fi
+
+      - name: Create new branch 🐣
+        if: env.CREATE_PR == 'true'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+          git remote update origin --prune
+          git checkout -b $BRANCH_NAME
+
+      - name: Commit and push the version bump
+        if: env.CREATE_PR == 'true'
+        run: |
+          # Bump version
+          sed -i "s/^rasa==.*/rasa==${LATEST_RASA_VERSION}/" requirements.txt
+          # Stage modified file
+          git add -u
+          # Commit & Push
+          git commit -m "Bump Rasa OSS to ${LATEST_RASA_VERSION}"
+          git push origin $BRANCH_NAME
+
+      - name: Open pull request ☄️
+        if: env.CREATE_PR == 'true'
+        env:
+          # This label will trigger train and test workflow
+          LABEL: 'tool:train-and-test' 
+        run: |
+          # Fill pull request title and body with branch name and commits  
+          gh pr create --fill \
+            --label "$LABEL" \
+            --reviewer RasaHQ/infrastructure-squad
+
+      - name: Comment
+        if: env.CREATE_PR == 'true'
+        run: gh pr comment $BRANCH_NAME --body "$(< .github/VERSION_BUMPER_PR_COMMENT.md)"
+
+      - name: Notify slack on failure
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@212e9f7a9ca33368c8dd879d6053972128258985
+        with:
+          channel_id: ${{ secrets.SLACK_ALERTS_CHANNEL_ID }}
+          status: FAILED
+          color: warning
