@@ -88,8 +88,23 @@ jobs:
         if: env.CREATE_PR == 'true'
         env:
           # This label will trigger train and test workflow
-          LABEL: 'train and test' 
+          LABEL: 'tool:train-and-test' 
         run: |
           # Fill pull request title and body with branch name and commits  
-          gh pr create --fill --label "$LABEL"
+          gh pr create --fill \
+            --label "$LABEL" \
+            --reviewer RasaHQ/infrastructure-squad
 
+      - name: Comment
+        if: env.CREATE_PR == 'true'
+        run: gh pr comment $BRANCH_NAME --body "$(< .github/VERSION_BUMPER_PR_COMMENT.md)"
+
+      - name: Notify slack on failure
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@212e9f7a9ca33368c8dd879d6053972128258985
+        with:
+          channel_id: ${{ secrets.SLACK_ALERTS_CHANNEL_ID }}
+          status: FAILED
+          color: warning

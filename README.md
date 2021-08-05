@@ -9,6 +9,10 @@ should be a `rasa-x-demo` release. Note that this does not generally apply to pa
 releases.
 
 ### How to release a new version
+**Note: The new workflow [Rasa OSS bumper](https://github.com/RasaHQ/rasa-x-demo/actions/workflows/rasaoss-version-bumper.yml) has automated steps 1-5 for us. There should be a PR with the updated Rasa OSS version and trained model. Once it's merged into the base branch, please perform step 6 to release a new version of rasa-x-demo.**
+
+**If you didn't see the PR, please let us know and follow the manual steps below.**
+
 1. Update the `rasa` version in `requirements.txt` to reflect the Rasa Open Source
  release used in the associated `rasa-x` release.
 2. If there was a major config / pipeline change in `rasa`: Update `config.yml` and

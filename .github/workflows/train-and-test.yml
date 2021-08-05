@@ -8,7 +8,7 @@ on:
 jobs:
   train_and_test:
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'train and test')
+    if: contains(github.event.pull_request.labels.*.name, 'tool:train-and-test')
 
     steps:
       - name: Checkout repository 🕝
