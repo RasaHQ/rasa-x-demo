@@ -36,5 +36,6 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-          git commit -am "Upload model for Rasa OSS $RASA_VERSION"
-          git push origin $GITHUB_HEAD_REF
+          git commit -am "Upload model for Rasa OSS $RASA_VERSION" \
+          && git push origin $GITHUB_HEAD_REF \
+          || true
