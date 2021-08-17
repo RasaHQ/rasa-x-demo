@@ -12,8 +12,6 @@ jobs:
   release:
     name: Release new demo
     runs-on: ubuntu-20.04
-    env:
-      TAG_NAME: ${GITHUB_REF#refs/tags/}
     steps:
       - name: Checkout git repository 🕝
         uses: actions/checkout@v2
@@ -29,6 +27,9 @@ jobs:
         run: |
           # Set up docker to authenticate via gcloud command-line tool.
           gcloud auth configure-docker
+
+      - name: Get tag name
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Build new image
         run: |
