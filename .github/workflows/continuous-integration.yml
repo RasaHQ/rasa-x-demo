@@ -36,15 +36,15 @@ jobs:
           RASA_SDK_VERSION=$(curl https://hub.docker.com/v2/repositories/rasa/rasa-sdk/tags |  jq -r '.results|.[]|.name' | grep -E "^[[:digit:]|\.|rc]+$" | sort -V | tail -n 1)
           echo "Latest SDK version is ${RASA_SDK_VERSION}"
           docker build \
-                -t gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME} \
+                -t gcr.io/rasa-platform/rasa-x-demo:${{ env.TAG_NAME }} \
                 --build-arg RASA_SDK_VERSION=${RASA_SDK_VERSION} \
                 .
 
       - name: Release new images
         run: |
-          docker push gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME}
+          docker push gcr.io/rasa-platform/rasa-x-demo:${{ env.TAG_NAME }}
 
           # Also tag as latest
-          docker tag gcr.io/rasa-platform/rasa-x-demo:${TAG_NAME} \
+          docker tag gcr.io/rasa-platform/rasa-x-demo:${{ env.TAG_NAME }} \
                           gcr.io/rasa-platform/rasa-x-demo:latest
           docker push gcr.io/rasa-platform/rasa-x-demo:latest
