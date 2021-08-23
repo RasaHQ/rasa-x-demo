@@ -11,6 +11,7 @@ on:
 jobs:
   bump_rasa_oss_version:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'RasaHQ'
 
     steps:
       - name: Authenticate GitHub CLI
