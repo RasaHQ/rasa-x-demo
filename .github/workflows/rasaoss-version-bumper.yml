@@ -22,9 +22,7 @@ jobs:
 
       - name: Get the latest Rasa OSS version 🏷
         run: |
-          # LATEST_RASA_VERSION=$(gh release list --repo github.com/RasaHQ/rasa --limit 10 | awk '{print $1}' | sort --version-sort -r | head -1)
-          # Debug: hardcode rasa version for testing
-          LATEST_RASA_VERSION=3.0.0
+          LATEST_RASA_VERSION=$(gh release list --repo github.com/RasaHQ/rasa --limit 10 | awk '{print $1}' | sort --version-sort -r | head -1)
           echo "Latest Rasa OSS version: $LATEST_RASA_VERSION"
           echo "LATEST_RASA_VERSION=$LATEST_RASA_VERSION" >> $GITHUB_ENV
 
