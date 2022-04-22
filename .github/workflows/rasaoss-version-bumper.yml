@@ -26,22 +26,10 @@ jobs:
           echo "Latest Rasa OSS version: $LATEST_RASA_VERSION"
           echo "LATEST_RASA_VERSION=$LATEST_RASA_VERSION" >> $GITHUB_ENV
 
-      # keep this step util Rasa X supports Rasa OSS 3.0
-      - name: Don't bump Rasa OSS 3.0 and above
-        run: |
-          if [[ ${{ env.LATEST_RASA_VERSION }} =~ 3.** ]]; then
-            echo "Rasa X doesn't compatible with Rasa OSS 3.0 yet. Skip the bumping."
-            echo "BUMP_RASA=false" >> $GITHUB_ENV
-          else
-            echo "BUMP_RASA=true" >> $GITHUB_ENV
-          fi
-
       - name: Checkout repository 🕝
-        if: env.BUMP_RASA == 'true'
         uses: actions/checkout@v2
 
       - name: Is Rasa OSS version up to date❓
-        if: env.BUMP_RASA == 'true'
         run: |
           RASA_VERSION=$(sed -n 's/^rasa==//p' requirements.txt)
 
