@@ -1,5 +1,5 @@
 ## Demo Rasa Enterprise App
-This is a repository showing an example bot and the setup needed to run it with Rasa X.
+This is a repository showing an example bot and the setup needed to run it with Rasa Enterprise.
 
 ## Development Internals
 
@@ -23,7 +23,7 @@ releases.
 5. Create a PR.
 6. Wait until it's merged into master, then tag and push a new release with 
     ```
-    git tag 0.26.0 -m 'new minor release for compatibility with Rasa X 0.26'
+    git tag 0.26.0 -m 'new minor release for compatibility with Rasa Enterprise 0.26'
     git push origin 0.26.0
     ```
 7. Update the `rasa-x-demo` version in the `rasa-x` repo (`rasa-x/.env`).
