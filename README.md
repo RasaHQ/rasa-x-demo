@@ -27,5 +27,3 @@ releases.
     git push origin 0.26.0
     ```
 7. Update the `rasa-x-demo` version in the `rasa-x` repo (`rasa-x/.env`).
-
-DUMMY COMMIT
