@@ -93,7 +93,7 @@ jobs:
         env:
           # This label will trigger train and test workflow
           LABEL: 'tool:train-and-test'
-          GITHUB_TOKEN: {{secrets.GH_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           # Fill pull request title and body with branch name and commits  
           gh pr create --fill \
