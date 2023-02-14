@@ -97,7 +97,7 @@ jobs:
           # Fill pull request title and body with branch name and commits  
           gh pr create --fill \
             --label "$LABEL" \
-            --reviewer RasaHQ/infrastructure-squad
+            --reviewer  Rasa/infrastructure-squad
 
       - name: Comment
         if: env.CREATE_PR == 'true'
