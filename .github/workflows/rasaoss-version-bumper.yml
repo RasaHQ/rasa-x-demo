@@ -57,8 +57,8 @@ jobs:
         run: |
           # Search all PRs (inc. open, closed, merged) and
           # return the list of matching PRs
-          gh pr list --state all --search "$BRANCH_NAME"
-          PRS=$(gh pr list --state all --search "$BRANCH_NAME")
+          gh pr list --state open --search "$BRANCH_NAME"
+          PRS=$(gh pr list --state open --search "$BRANCH_NAME")
 
           # If $PRS is not empty, we know there is a related PR that bumping Rasa OSS.
           if [[ -n $PRS ]]; then
