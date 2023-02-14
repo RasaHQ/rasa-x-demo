@@ -52,7 +52,7 @@ jobs:
       - name: Check if duplicated PR exists 🔍
         if: env.CREATE_PR == 'true'
         run: |
-          # Search all PRs (inc. open, closed, merged) and
+          # Search all open PRs and
           # return the list of matching PRs
           gh pr list --state open --search "$BRANCH_NAME"
           PRS=$(gh pr list --state open --search "$BRANCH_NAME")
