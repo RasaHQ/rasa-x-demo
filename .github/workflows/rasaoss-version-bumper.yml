@@ -82,13 +82,11 @@ jobs:
         run: |
           # Bump version
           sed -i "s/^rasa==.*/rasa==${LATEST_RASA_VERSION}/" requirements.txt
-          # Get latest code
-          git pull
           # Stage modified file
           git add -u
           # Commit & Push
           git commit -m "Bump Rasa OSS to ${LATEST_RASA_VERSION}"
-          git push origin $BRANCH_NAME
+          git push -f origin $BRANCH_NAME
 
       - name: Open pull request ☄️
         if: env.CREATE_PR == 'true'
@@ -105,18 +103,18 @@ jobs:
         if: env.CREATE_PR == 'true'
         run: gh pr comment $BRANCH_NAME --body "$(< .github/VERSION_BUMPER_PR_COMMENT.md)"
       
-      - name: Notify Slack of failure ⛔
-        if: failure()
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_INFRA_WEBHOOK }}
-        uses: Ilshidur/action-slack@689ad44a9c9092315abd286d0e3a9a74d31ab78a
-        with:
-          args: "⛔️ Bumping Rasa OSS version failed! Please check out GitHub Actions: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      # - name: Notify Slack of failure ⛔
+      #   if: failure()
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_INFRA_WEBHOOK }}
+      #   uses: Ilshidur/action-slack@689ad44a9c9092315abd286d0e3a9a74d31ab78a
+      #   with:
+      #     args: "⛔️ Bumping Rasa OSS version failed! Please check out GitHub Actions: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-      - name: Notify Slack of success ⚡
-        if: success()
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_INFRA_WEBHOOK }}
-        uses: Ilshidur/action-slack@689ad44a9c9092315abd286d0e3a9a74d31ab78a
-        with:
-          args: "⚡ Bumping Rasa OSS version succeeded! Please check out GitHub Actions: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      # - name: Notify Slack of success ⚡
+      #   if: success()
+      #   env:
+      #     SLACK_WEBHOOK: ${{ secrets.SLACK_INFRA_WEBHOOK }}
+      #   uses: Ilshidur/action-slack@689ad44a9c9092315abd286d0e3a9a74d31ab78a
+      #   with:
+      #     args: "⚡ Bumping Rasa OSS version succeeded! Please check out GitHub Actions: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
