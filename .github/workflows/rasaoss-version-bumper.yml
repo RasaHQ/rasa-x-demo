@@ -2,9 +2,12 @@
 name: Bump Rasa OSS version
 
 on:
-  schedule:
-    # Run once a day at 08:00
-    - cron: '0 8 * * *'
+  push:
+    branches:
+      - fix-version-bump
+  # schedule:
+  #   # Run once a day at 08:00
+  #   - cron: '0 8 * * *'
   workflow_dispatch:
 
 
@@ -106,6 +109,6 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         uses: voxmedia/github-action-slack-notify-build@212e9f7a9ca33368c8dd879d6053972128258985
         with:
-          channel_id: ${{ secrets.SLACK_ALERTS_CHANNEL_ID }}
+          channel_id: 'infrastructure-squad-monitors'
           status: FAILED
           color: warning
