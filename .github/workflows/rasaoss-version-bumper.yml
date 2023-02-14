@@ -10,7 +10,6 @@ on:
   #   - cron: '0 8 * * *'
   workflow_dispatch:
 
-
 jobs:
   bump_rasa_oss_version:
     runs-on: ubuntu-latest
