@@ -7,7 +7,6 @@ on:
     - cron: '0 8 * * *'
   workflow_dispatch:
 
-
 jobs:
   bump_rasa_oss_version:
     runs-on: ubuntu-latest
@@ -55,8 +54,8 @@ jobs:
         run: |
           # Search all PRs (inc. open, closed, merged) and
           # return the list of matching PRs
-          gh pr list --state all --search "$BRANCH_NAME"
-          PRS=$(gh pr list --state all --search "$BRANCH_NAME")
+          gh pr list --state open --search "$BRANCH_NAME"
+          PRS=$(gh pr list --state open --search "$BRANCH_NAME")
 
           # If $PRS is not empty, we know there is a related PR that bumping Rasa OSS.
           if [[ -n $PRS ]]; then
@@ -83,29 +82,35 @@ jobs:
           git add -u
           # Commit & Push
           git commit -m "Bump Rasa OSS to ${LATEST_RASA_VERSION}"
-          git push origin $BRANCH_NAME
+          git push -f origin $BRANCH_NAME
 
       - name: Open pull request ☄️
         if: env.CREATE_PR == 'true'
         env:
           # This label will trigger train and test workflow
-          LABEL: 'tool:train-and-test' 
+          LABEL: 'tool:train-and-test'
         run: |
           # Fill pull request title and body with branch name and commits  
           gh pr create --fill \
             --label "$LABEL" \
-            --reviewer RasaHQ/infrastructure-squad
+            --reviewer rasa-aadlv,miraai,rasa-jmac,aerowithanl
 
       - name: Comment
         if: env.CREATE_PR == 'true'
         run: gh pr comment $BRANCH_NAME --body "$(< .github/VERSION_BUMPER_PR_COMMENT.md)"
-
-      - name: Notify slack on failure
+      
+      - name: Notify Slack of failure ⛔
         if: failure()
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: voxmedia/github-action-slack-notify-build@212e9f7a9ca33368c8dd879d6053972128258985
+          SLACK_WEBHOOK: ${{ secrets.SLACK_INFRA_WEBHOOK }}
+        uses: Ilshidur/action-slack@689ad44a9c9092315abd286d0e3a9a74d31ab78a
         with:
-          channel_id: ${{ secrets.SLACK_ALERTS_CHANNEL_ID }}
-          status: FAILED
-          color: warning
+          args: "⛔️ Bumping Rasa OSS version failed! Please check out GitHub Actions: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Notify Slack of success ⚡
+        if: success()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_INFRA_WEBHOOK }}
+        uses: Ilshidur/action-slack@689ad44a9c9092315abd286d0e3a9a74d31ab78a
+        with:
+          args: "⚡ Bumping Rasa OSS version succeeded! Please check out GitHub Actions: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
