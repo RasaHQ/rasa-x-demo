@@ -21,7 +21,7 @@ jobs:
         run: |
           # https://cli.github.com/manual/gh_auth_login
           # read token from standard input 
-          gh auth login --with-token <<< ${{ secrets.GH_TOKEN }}
+          gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get the latest Rasa OSS version 🏷
         run: |
@@ -92,7 +92,8 @@ jobs:
         if: env.CREATE_PR == 'true'
         env:
           # This label will trigger train and test workflow
-          LABEL: 'tool:train-and-test' 
+          LABEL: 'tool:train-and-test'
+          GITHUB_TOKEN: {{secrets.GH_TOKEN}}
         run: |
           # Fill pull request title and body with branch name and commits  
           gh pr create --fill \
