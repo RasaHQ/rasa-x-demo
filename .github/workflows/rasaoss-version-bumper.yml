@@ -19,9 +19,10 @@ jobs:
           # read token from standard input 
           gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}
 
+      # Get latest Rasa OSS release version, exclude an alpha or dev tags
       - name: Get the latest Rasa OSS version 🏷
         run: |
-          LATEST_RASA_VERSION=$(gh release list --repo github.com/RasaHQ/rasa --limit 10 | awk '{print $1}' | sort --version-sort -r | head -1)
+          LATEST_RASA_VERSION=$(gh release list --repo github.com/RasaHQ/rasa --limit 10 | awk '{print $1}' | sort -r -V | grep -E "^[0-9]+.[0-9]+.[0-9]+$" | head -n1)
           echo "Latest Rasa OSS version: $LATEST_RASA_VERSION"
           echo "LATEST_RASA_VERSION=$LATEST_RASA_VERSION" >> $GITHUB_ENV
 
